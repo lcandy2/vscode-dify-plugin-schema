@@ -1,26 +1,25 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Dify Plugin Tool Provider Configuration",
-  "description": "JSON Schema for Dify Plugin Tool Provider Configuration (tools.yaml)",
+  "description": "JSON Schema for Dify Plugin Tool Provider Configuration (provider.yaml)",
   "type": "object",
   "required": [
     "identity",
-    "credentials_for_provider",
     "tools",
     "extra"
   ],
   "properties": {
     "identity": {
       "type": "object",
-      "required": ["author", "name", "description", "icon", "label", "tags"],
+      "required": ["author", "name", "description", "icon", "label"],
       "properties": {
         "author": {
           "type": "string",
-          "description": "The author of the tool"
+          "description": "The author of the tool provider"
         },
         "name": {
           "type": "string",
-          "description": "The name of the tool"
+          "description": "The name of the tool provider"
         },
         "description": {
           "type": "object",
@@ -32,7 +31,7 @@
         },
         "icon": {
           "type": "string",
-          "description": "The icon of the tool"
+          "description": "The icon of the tool provider"
         },
         "label": {
           "type": "object",
@@ -44,7 +43,8 @@
         },
         "tags": {
           "type": "array",
-          "description": "The tags of the tool",
+          "description": "The tags of the tool provider",
+          "default": [],
           "items": {
             "type": "string",
             "enum": [
@@ -159,6 +159,7 @@
     "tools": {
       "type": "array",
       "description": "The tools provided by this tool provider",
+      "default": [],
       "items": {
         "type": "string",
         "description": "Path to the tool YAML file"
