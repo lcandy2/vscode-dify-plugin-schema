@@ -1,0 +1,161 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Dify Tool Manifest",
+  "description": "Schema for Dify tool manifest.yaml file",
+  "type": "object",
+  "required": [
+    "version",
+    "type",
+    "author",
+    "name",
+    "label",
+    "description",
+    "icon",
+    "resource",
+    "plugins",
+    "meta",
+    "created_at",
+    "privacy",
+    "verified"
+  ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^\\\\d+\\\\.\\\\d+\\\\.\\\\d+$",
+      "description": "Semantic version of the tool manifest format itself."
+    },
+    "type": {
+      "type": "string",
+      "const": "plugin",
+      "description": "Type identifier, should be 'plugin'."
+    },
+    "author": {
+      "type": "string",
+      "description": "Author of the tool."
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]+$",
+      "description": "Unique identifier name for the tool (alphanumeric, _, -)."
+    },
+    "label": {
+      "type": "object",
+      "description": "Display names in different languages.",
+      "patternProperties": {
+        "^[a-zA-Z]{2,3}(_[a-zA-Z]{2,4})?$": { "type": "string" }
+      },
+      "minProperties": 1
+    },
+    "description": {
+      "type": "object",
+      "description": "Descriptions in different languages.",
+      "patternProperties": {
+        "^[a-zA-Z]{2,3}(_[a-zA-Z]{2,4})?$": { "type": "string" }
+      },
+      "minProperties": 1
+    },
+    "icon": {
+      "type": "string",
+      "description": "Path to the tool's icon file (e.g., icon.svg)."
+    },
+    "resource": {
+      "type": "object",
+      "properties": {
+        "memory": { "type": "integer", "minimum": 0 },
+        "permission": {
+          "type": "object",
+          "properties": {
+            "tool": { "$ref": "#/definitions/permissionToggle" },
+            "model": { "$ref": "#/definitions/modelPermission" },
+            "endpoint": { "$ref": "#/definitions/permissionToggle" },
+            "app": { "$ref": "#/definitions/permissionToggle" },
+            "storage": { "$ref": "#/definitions/storagePermission" }
+          }
+        }
+      },
+      "required": ["memory", "permission"]
+    },
+    "plugins": {
+      "type": "object",
+      "properties": {
+        "tools": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of tool definition files (e.g., provider/example.yaml)."
+        }
+      },
+      "required": ["tools"]
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^\\\\d+\\\\.\\\\d+\\\\.\\\\d+$",
+          "description": "Version of the tool itself."
+        },
+        "arch": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["amd64", "arm64"] }
+        },
+        "runner": {
+          "type": "object",
+          "properties": {
+            "language": { "type": "string", "enum": ["python"] },
+            "version": { "type": "string" },
+            "entrypoint": { "type": "string" }
+          },
+          "required": ["language", "version", "entrypoint"]
+        }
+      },
+      "required": ["version", "arch", "runner"]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp of creation in ISO 8601 format."
+    },
+    "privacy": {
+      "type": "string",
+      "description": "Path to the privacy policy file (e.g., PRIVACY.md)."
+    },
+    "verified": {
+      "type": "boolean",
+      "description": "Indicates if the tool has been verified."
+    }
+  },
+  "definitions": {
+    "permissionToggle": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" }
+      },
+      "required": ["enabled"]
+    },
+    "modelPermission": {
+      "allOf": [
+        { "$ref": "#/definitions/permissionToggle" },
+        {
+          "properties": {
+            "llm": { "type": "boolean" },
+            "text_embedding": { "type": "boolean" },
+            "rerank": { "type": "boolean" },
+            "tts": { "type": "boolean" },
+            "speech2text": { "type": "boolean" },
+            "moderation": { "type": "boolean" }
+          }
+        }
+      ]
+    },
+    "storagePermission": {
+      "allOf": [
+        { "$ref": "#/definitions/permissionToggle" },
+        {
+          "properties": {
+            "size": { "type": "integer", "minimum": 0 }
+          }
+        }
+      ]
+    }
+  }
+} 
