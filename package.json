@@ -23,7 +23,7 @@
     "yamlValidation": [
       {
         "fileMatch": "/manifest.yaml",
-        "url": "./src/schema.json"
+        "url": "https://raw.githubusercontent.com/lcandy2/vscode-dify-plugin-schema/refs/heads/main/src/schema/manifest.json"
       }
     ]
   },
