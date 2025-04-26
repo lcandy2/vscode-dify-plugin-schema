@@ -13,7 +13,14 @@
     "workspaceContains:manifest.yaml"
   ],
   "main": "./dist/extension.js",
-  "contributes": {},
+  "contributes": {
+    "yamlValidation": [
+      {
+        "fileMatch": "/manifest.yaml",
+        "url": "./src/schema.json"
+      }
+    ]
+  },
   "scripts": {
     "vscode:prepublish": "pnpm run package",
     "compile": "pnpm run check-types && pnpm run lint && node esbuild.js",
