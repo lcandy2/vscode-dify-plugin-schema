@@ -3,7 +3,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-import { validateYamlDocument, yamlDiagnostics, isManifestFile } from './yamlValidator';
+import { validateYamlDocument, yamlDiagnostics, isManifestFile, initializeValidator } from './yamlValidator';
 
 // Create a decoration type for the "Dify Tool Manifest File" title
 const manifestTitleDecorationType = vscode.window.createTextEditorDecorationType({
@@ -79,6 +79,9 @@ function decorateManifestFile(editor: vscode.TextEditor | undefined): void {
 export function activate(context: vscode.ExtensionContext) {
 
 	console.log('Dify Developer Kit extension is activating.');
+
+	// Initialize the schema validator
+	initializeValidator(context);
 
 	// Check existing workspace folders when the extension activates
 	if (vscode.workspace.workspaceFolders) {
