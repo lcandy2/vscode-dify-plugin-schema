@@ -103,13 +103,13 @@ export function validateYamlDocument(document: vscode.TextDocument): void {
 			// Check if memory is defined
 			if (!parsedYaml.resource.memory) {
 				const diagnostic = createMissingNestedFieldDiagnostic(text, 'resource', 'memory', document);
-				if (diagnostic) diagnostics.push(diagnostic);
+				if (diagnostic) {diagnostics.push(diagnostic);}
 			}
 			
 			// Check permission structure
 			if (!parsedYaml.resource.permission) {
 				const diagnostic = createMissingNestedFieldDiagnostic(text, 'resource', 'permission', document);
-				if (diagnostic) diagnostics.push(diagnostic);
+				if (diagnostic) {diagnostics.push(diagnostic);}
 			}
 		}
 		
@@ -120,7 +120,7 @@ export function validateYamlDocument(document: vscode.TextDocument): void {
 			for (const field of requiredMetaFields) {
 				if (!parsedYaml.meta[field]) {
 					const diagnostic = createMissingNestedFieldDiagnostic(text, 'meta', field, document);
-					if (diagnostic) diagnostics.push(diagnostic);
+					if (diagnostic) {diagnostics.push(diagnostic);}
 				}
 			}
 			
@@ -132,7 +132,7 @@ export function validateYamlDocument(document: vscode.TextDocument): void {
 						const diagnostic = createMissingNestedFieldDiagnostic(
 							text, 'meta.runner', field, document, 'meta'
 						);
-						if (diagnostic) diagnostics.push(diagnostic);
+						if (diagnostic) {diagnostics.push(diagnostic);}
 					}
 				}
 			}
@@ -185,7 +185,7 @@ function createMissingNestedFieldDiagnostic(
 	if (grandparentField) {
 		// First find the grandparent
 		const grandparentMatch = new RegExp(`${grandparentField}\\s*:`, 'g').exec(searchText);
-		if (!grandparentMatch) return null;
+		if (!grandparentMatch) {return null;}
 		
 		// Update the search scope to start from after the grandparent
 		parentOffset = grandparentMatch.index;
