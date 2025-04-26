@@ -27,7 +27,11 @@
       },
       {
         "fileMatch": "/tools/*.yaml",
-        "url": "https://lcandy2.github.io/vscode-dify-plugin-schema/src/schema/tool.json"
+        "url": "https://lcandy2.github.io/vscode-dify-plugin-schema/src/schema/tools/tools.json"
+      },
+      {
+        "fileMatch": "/provider/*.yaml",
+        "url": "https://lcandy2.github.io/vscode-dify-plugin-schema/src/schema/tools/provider.json"
       }
     ]
   },

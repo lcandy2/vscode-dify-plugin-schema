@@ -1,0 +1,184 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Dify Plugin Tool Provider Configuration",
+  "description": "JSON Schema for Dify Plugin Tool Provider Configuration (tools.yaml)",
+  "type": "object",
+  "required": [
+    "identity",
+    "credentials_for_provider",
+    "tools",
+    "extra"
+  ],
+  "properties": {
+    "identity": {
+      "type": "object",
+      "required": ["author", "name", "description", "icon", "label", "tags"],
+      "properties": {
+        "author": {
+          "type": "string",
+          "description": "The author of the tool"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the tool"
+        },
+        "description": {
+          "type": "object",
+          "description": "Internationalized description",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "minProperties": 1
+        },
+        "icon": {
+          "type": "string",
+          "description": "The icon of the tool"
+        },
+        "label": {
+          "type": "object",
+          "description": "Internationalized label",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "minProperties": 1
+        },
+        "tags": {
+          "type": "array",
+          "description": "The tags of the tool",
+          "items": {
+            "type": "string",
+            "enum": [
+              "search",
+              "image",
+              "videos",
+              "weather",
+              "finance",
+              "design",
+              "travel",
+              "social",
+              "news",
+              "medical",
+              "productivity",
+              "education",
+              "business",
+              "entertainment",
+              "utilities",
+              "other"
+            ]
+          }
+        }
+      }
+    },
+    "credentials_for_provider": {
+      "type": "object",
+      "description": "The credentials schema of the tool provider",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["type", "label"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "secret-input",
+              "text-input",
+              "select",
+              "boolean",
+              "model-selector",
+              "app-selector",
+              "array[tools]"
+            ],
+            "description": "The type of the credentials"
+          },
+          "scope": {
+            "type": "string",
+            "description": "The scope of the credentials"
+          },
+          "required": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether the credential is required"
+          },
+          "default": {
+            "oneOf": [
+              { "type": "string" },
+              { "type": "number" },
+              { "type": "integer" }
+            ],
+            "description": "The default value of the credential"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["value", "label"],
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "description": "The value of the option"
+                },
+                "label": {
+                  "type": "object",
+                  "description": "Internationalized label",
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "minProperties": 1
+                }
+              }
+            }
+          },
+          "label": {
+            "type": "object",
+            "description": "Internationalized label",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "minProperties": 1
+          },
+          "help": {
+            "type": "object",
+            "description": "Internationalized help text",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "url": {
+            "type": "string",
+            "description": "URL for additional information"
+          },
+          "placeholder": {
+            "type": "object",
+            "description": "Internationalized placeholder text",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "tools": {
+      "type": "array",
+      "description": "The tools provided by this tool provider",
+      "items": {
+        "type": "string",
+        "description": "Path to the tool YAML file"
+      }
+    },
+    "extra": {
+      "type": "object",
+      "required": ["python"],
+      "properties": {
+        "python": {
+          "type": "object",
+          "required": ["source"],
+          "properties": {
+            "source": {
+              "type": "string",
+              "description": "Python source code"
+            }
+          }
+        }
+      }
+    }
+  }
+}
