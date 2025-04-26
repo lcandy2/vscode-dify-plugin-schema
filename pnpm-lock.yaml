@@ -12,34 +12,34 @@ importers:
         specifier: ^10.0.10
         version: 10.0.10
       '@types/node':
-        specifier: 20.x
-        version: 20.17.31
+        specifier: ~22.15.2
+        version: 22.15.2
       '@types/vscode':
-        specifier: ^1.99.0
+        specifier: ^1.99.1
         version: 1.99.1
       '@typescript-eslint/eslint-plugin':
-        specifier: ^8.28.0
+        specifier: ^8.31.0
         version: 8.31.0(@typescript-eslint/parser@8.31.0(eslint@9.25.1)(typescript@5.8.3))(eslint@9.25.1)(typescript@5.8.3)
       '@typescript-eslint/parser':
-        specifier: ^8.28.0
+        specifier: ^8.31.0
         version: 8.31.0(eslint@9.25.1)(typescript@5.8.3)
       '@vscode/test-cli':
         specifier: ^0.0.10
         version: 0.0.10
       '@vscode/test-electron':
-        specifier: ^2.4.1
+        specifier: ^2.5.2
         version: 2.5.2
       esbuild:
-        specifier: ^0.25.1
+        specifier: ^0.25.3
         version: 0.25.3
       eslint:
-        specifier: ^9.23.0
+        specifier: ^9.25.1
         version: 9.25.1
       npm-run-all:
         specifier: ^4.1.5
         version: 4.1.5
       typescript:
-        specifier: ^5.8.2
+        specifier: ^5.8.3
         version: 5.8.3
 
 packages:
@@ -301,8 +301,8 @@ packages:
   '@types/mocha@10.0.10':
     resolution: {integrity: sha512-xPyYSz1cMPnJQhl0CLMH68j3gprKZaTjG3s5Vi+fDgx+uhG9NOXwbVt52eFS8ECyXhyKcjDLCBEqBExKuiZb7Q==}
 
-  '@types/node@20.17.31':
-    resolution: {integrity: sha512-quODOCNXQAbNf1Q7V+fI8WyErOCh0D5Yd31vHnKu4GkSztGQ7rlltAaqXhHhLl33tlVyUXs2386MkANSwgDn6A==}
+  '@types/node@22.15.2':
+    resolution: {integrity: sha512-uKXqKN9beGoMdBfcaTY1ecwz6ctxuJAcUlwE55938g0ZJ8lRxwAZqRz2AJ4pzpt5dHdTPMB863UZ0ESiFUcP7A==}
 
   '@types/vscode@1.99.1':
     resolution: {integrity: sha512-cQlqxHZ040ta6ovZXnXRxs3fJiTmlurkIWOfZVcLSZPcm9J4ikFpXuB7gihofGn5ng+kDVma5EmJIclfk0trPQ==}
@@ -1517,8 +1517,8 @@ packages:
     resolution: {integrity: sha512-nWJ91DjeOkej/TA8pXQ3myruKpKEYgqvpw9lz4OPHj/NWFNluYrjbz9j01CJ8yKQd2g4jFoOkINCTW2I5LEEyw==}
     engines: {node: '>= 0.4'}
 
-  undici-types@6.19.8:
-    resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
+  undici-types@6.21.0:
+    resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
 
   uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
@@ -1783,9 +1783,9 @@ snapshots:
 
   '@types/mocha@10.0.10': {}
 
-  '@types/node@20.17.31':
+  '@types/node@22.15.2':
     dependencies:
-      undici-types: 6.19.8
+      undici-types: 6.21.0
 
   '@types/vscode@1.99.1': {}
 
@@ -3239,7 +3239,7 @@ snapshots:
       has-symbols: 1.1.0
       which-boxed-primitive: 1.1.1
 
-  undici-types@6.19.8: {}
+  undici-types@6.21.0: {}
 
   uri-js@4.4.1:
     dependencies:
