@@ -4,6 +4,17 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 
+// Create a decoration type for the "Dify Tool Manifest File" title
+const manifestTitleDecorationType = vscode.window.createTextEditorDecorationType({
+	after: {
+		contentText: 'Dify Tool Manifest File',
+		color: '#888888',
+		fontStyle: 'italic',
+		margin: '0 0 0 20px'
+	},
+	isWholeLine: true
+});
+
 /**
  * Checks if a given workspace folder is a Dify tool directory
  * by looking for .difyignore, manifest.yaml, and main.py.
@@ -37,6 +48,29 @@ function checkDifyDirectory(folder: vscode.WorkspaceFolder): void {
 	}
 }
 
+/**
+ * Add a title decoration to manifest.yaml files
+ * @param editor Text editor to inspect and possibly decorate
+ */
+function decorateManifestFile(editor: vscode.TextEditor | undefined): void {
+	if (!editor) {
+		return;
+	}
+
+	// Check if this is a manifest.yaml file
+	const fileName = path.basename(editor.document.fileName);
+	if (fileName !== 'manifest.yaml') {
+		return;
+	}
+
+	// Apply the decoration to the first line
+	const decorations: vscode.DecorationOptions[] = [{
+		range: new vscode.Range(0, 0, 0, 0),
+		hoverMessage: 'This is the main configuration file for a Dify tool'
+	}];
+	
+	editor.setDecorations(manifestTitleDecorationType, decorations);
+}
 
 // This method is called when your extension is activated
 export function activate(context: vscode.ExtensionContext) {
@@ -66,8 +100,30 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	// Add the watcher to the subscriptions for cleanup when the extension deactivates
-	context.subscriptions.push(workspaceWatcher);
+	// Check the active editor when extension starts
+	if (vscode.window.activeTextEditor) {
+		decorateManifestFile(vscode.window.activeTextEditor);
+	}
+
+	// Listen for changes to the active text editor and apply decorations if needed
+	const editorChangeListener = vscode.window.onDidChangeActiveTextEditor(editor => {
+		decorateManifestFile(editor);
+	});
+
+	// Also listen for text document changes to update decorations when content changes
+	const documentChangeListener = vscode.workspace.onDidChangeTextDocument(event => {
+		if (vscode.window.activeTextEditor && event.document === vscode.window.activeTextEditor.document) {
+			decorateManifestFile(vscode.window.activeTextEditor);
+		}
+	});
+
+	// Add the watchers to the subscriptions for cleanup when the extension deactivates
+	context.subscriptions.push(
+		workspaceWatcher,
+		editorChangeListener,
+		documentChangeListener,
+		manifestTitleDecorationType
+	);
 
 	console.log('Dify Developer Kit activation complete.');
 }
