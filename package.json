@@ -1,7 +1,10 @@
 {
-  "name": "dify-developer-kit",
-  "displayName": "dify-developer-kit",
-  "description": "",
+  "name": "dify-plugin-schema",
+  "displayName": "Dify Plugin Schema",
+  "description": "Dify Plugin Schema",
+  "author": {
+    "name": "Citron(@lcandy2)"
+  },
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.99.0"
