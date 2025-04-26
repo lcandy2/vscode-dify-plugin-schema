@@ -24,6 +24,10 @@
       {
         "fileMatch": "/manifest.yaml",
         "url": "https://raw.githubusercontent.com/lcandy2/vscode-dify-plugin-schema/refs/heads/main/src/schema/manifest.json"
+      },
+      {
+        "fileMatch": "/tools/*.yaml",
+        "url": "https://raw.githubusercontent.com/lcandy2/vscode-dify-plugin-schema/refs/heads/main/src/schema/tool.json"
       }
     ]
   },

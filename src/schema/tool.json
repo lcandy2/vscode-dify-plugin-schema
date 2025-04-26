@@ -1,0 +1,382 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Dify Plugin Tool Configuration",
+  "description": "JSON Schema for Dify Plugin Tool Configuration (tools/*.yaml)",
+  "type": "object",
+  "required": [
+    "identity",
+    "tools",
+    "credentials_for_provider",
+    "extra"
+  ],
+  "properties": {
+    "identity": {
+      "type": "object",
+      "required": ["author", "name", "description", "icon", "label", "tags"],
+      "properties": {
+        "author": {
+          "type": "string",
+          "description": "The author of the tool"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the tool"
+        },
+        "description": {
+          "type": "object",
+          "description": "Internationalized description",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "minProperties": 1
+        },
+        "icon": {
+          "type": "string",
+          "description": "The icon of the tool"
+        },
+        "label": {
+          "type": "object",
+          "description": "Internationalized label",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "minProperties": 1
+        },
+        "tags": {
+          "type": "array",
+          "description": "The tags of the tool",
+          "items": {
+            "type": "string",
+            "enum": [
+              "search",
+              "image",
+              "videos",
+              "weather",
+              "finance",
+              "design",
+              "travel",
+              "social",
+              "news",
+              "medical",
+              "productivity",
+              "education",
+              "business",
+              "entertainment",
+              "utilities",
+              "other"
+            ]
+          }
+        }
+      }
+    },
+    "credentials_for_provider": {
+      "type": "object",
+      "description": "The credentials schema of the tool provider",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["type", "label"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "secret-input",
+              "text-input",
+              "select",
+              "boolean",
+              "model-selector",
+              "app-selector",
+              "array[tools]"
+            ],
+            "description": "The type of the credentials"
+          },
+          "scope": {
+            "type": "string",
+            "description": "The scope of the credentials"
+          },
+          "required": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether the credential is required"
+          },
+          "default": {
+            "oneOf": [
+              { "type": "string" },
+              { "type": "number" },
+              { "type": "integer" }
+            ],
+            "description": "The default value of the credential"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["value", "label"],
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "description": "The value of the option"
+                },
+                "label": {
+                  "type": "object",
+                  "description": "Internationalized label",
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "minProperties": 1
+                }
+              }
+            }
+          },
+          "label": {
+            "type": "object",
+            "description": "Internationalized label",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "minProperties": 1
+          },
+          "help": {
+            "type": "object",
+            "description": "Internationalized help text",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "url": {
+            "type": "string",
+            "description": "URL for additional information"
+          },
+          "placeholder": {
+            "type": "object",
+            "description": "Internationalized placeholder text",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "tools": {
+      "type": "array",
+      "description": "The tools provided by this tool provider",
+      "items": {
+        "type": "string",
+        "description": "Path to the tool YAML file"
+      }
+    },
+    "extra": {
+      "type": "object",
+      "required": ["python"],
+      "properties": {
+        "python": {
+          "type": "object",
+          "required": ["source"],
+          "properties": {
+            "source": {
+              "type": "string",
+              "description": "Python source code"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "tool": {
+      "type": "object",
+      "required": ["identity", "description", "extra"],
+      "properties": {
+        "identity": {
+          "type": "object",
+          "required": ["author", "name", "label"],
+          "properties": {
+            "author": {
+              "type": "string",
+              "description": "The author of the tool"
+            },
+            "name": {
+              "type": "string",
+              "description": "The name of the tool"
+            },
+            "label": {
+              "type": "object",
+              "description": "Internationalized label",
+              "additionalProperties": {
+                "type": "string"
+              },
+              "minProperties": 1
+            }
+          }
+        },
+        "parameters": {
+          "type": "array",
+          "description": "The parameters of the tool",
+          "items": {
+            "type": "object",
+            "required": ["name", "label", "human_description", "type", "form"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The name of the parameter"
+              },
+              "label": {
+                "type": "object",
+                "description": "Internationalized label",
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "minProperties": 1
+              },
+              "human_description": {
+                "type": "object",
+                "description": "Internationalized description for humans",
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "minProperties": 1
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "string",
+                  "number",
+                  "boolean",
+                  "select",
+                  "secret-input",
+                  "file",
+                  "files",
+                  "model-selector",
+                  "app-selector"
+                ],
+                "description": "The type of the parameter"
+              },
+              "auto_generate": {
+                "type": "object",
+                "required": ["type"],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["prompt_instruction"],
+                    "description": "The type of auto generation"
+                  }
+                }
+              },
+              "template": {
+                "type": "object",
+                "required": ["enabled"],
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Whether template is enabled"
+                  }
+                }
+              },
+              "scope": {
+                "type": "string",
+                "description": "The scope of the parameter"
+              },
+              "form": {
+                "type": "string",
+                "enum": ["schema", "form", "llm"],
+                "description": "The form of the parameter"
+              },
+              "llm_description": {
+                "type": "string",
+                "description": "Description for the LLM"
+              },
+              "required": {
+                "type": "boolean",
+                "default": false,
+                "description": "Whether the parameter is required"
+              },
+              "default": {
+                "oneOf": [
+                  { "type": "string" },
+                  { "type": "number" },
+                  { "type": "integer" }
+                ],
+                "description": "The default value of the parameter"
+              },
+              "min": {
+                "type": "number",
+                "description": "The minimum value for number type"
+              },
+              "max": {
+                "type": "number",
+                "description": "The maximum value for number type"
+              },
+              "precision": {
+                "type": "integer",
+                "description": "The precision for number type"
+              },
+              "options": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["value", "label"],
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "description": "The value of the option"
+                    },
+                    "label": {
+                      "type": "object",
+                      "description": "Internationalized label",
+                      "additionalProperties": {
+                        "type": "string"
+                      },
+                      "minProperties": 1
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": {
+          "type": "object",
+          "required": ["human", "llm"],
+          "properties": {
+            "human": {
+              "type": "object",
+              "description": "Internationalized description for humans",
+              "additionalProperties": {
+                "type": "string"
+              },
+              "minProperties": 1
+            },
+            "llm": {
+              "type": "string",
+              "description": "Description for the LLM"
+            }
+          }
+        },
+        "has_runtime_parameters": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether the tool has runtime parameters"
+        },
+        "output_schema": {
+          "type": "object",
+          "description": "JSON schema for the tool output"
+        },
+        "extra": {
+          "type": "object",
+          "required": ["python"],
+          "properties": {
+            "python": {
+              "type": "object",
+              "required": ["source"],
+              "properties": {
+                "source": {
+                  "type": "string",
+                  "description": "Python source code"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
