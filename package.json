@@ -7,7 +7,7 @@
   },
   "version": "0.0.1",
   "engines": {
-    "vscode": "^1.99.0"
+    "vscode": "^1.90.0"
   },
   "categories": [
     "Other"
@@ -55,7 +55,7 @@
   "devDependencies": {
     "@types/mocha": "^10.0.10",
     "@types/node": "~22.15.2",
-    "@types/vscode": "^1.99.1",
+    "@types/vscode": "^1.90.0",
     "@types/yaml": "^1.9.7",
     "@typescript-eslint/eslint-plugin": "^8.31.0",
     "@typescript-eslint/parser": "^8.31.0",
