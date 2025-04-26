@@ -10,7 +10,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onStartupFinished"
+    "workspaceContains:manifest.yaml"
   ],
   "main": "./dist/extension.js",
   "contributes": {},
