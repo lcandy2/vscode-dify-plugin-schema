@@ -13,6 +13,9 @@
     "workspaceContains:manifest.yaml"
   ],
   "main": "./dist/extension.js",
+  "extensionDependencies": [
+    "redhat.vscode-yaml"
+  ],
   "contributes": {
     "yamlValidation": [
       {

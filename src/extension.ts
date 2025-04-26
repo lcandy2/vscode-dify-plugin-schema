@@ -3,7 +3,6 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-import { validateYamlDocument, yamlDiagnostics, isManifestFile, initializeValidator } from './yamlValidator';
 
 // Create a decoration type for the "Dify Tool Manifest File" title
 const manifestTitleDecorationType = vscode.window.createTextEditorDecorationType({
@@ -50,6 +49,27 @@ function checkDifyDirectory(folder: vscode.WorkspaceFolder): void {
 }
 
 /**
+ * Check if a file is a manifest.yaml file at the root level
+ */
+function isRootManifestFile(document: vscode.TextDocument): boolean {
+	const fileName = path.basename(document.fileName);
+	if (fileName !== 'manifest.yaml') {
+		return false;
+	}
+	
+	// Check if it's at the root level of a workspace folder
+	for (const folder of vscode.workspace.workspaceFolders || []) {
+		const workspaceRoot = folder.uri.fsPath;
+		const documentDir = path.dirname(document.fileName);
+		if (documentDir === workspaceRoot) {
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+/**
  * Add a title decoration to manifest.yaml files
  * @param editor Text editor to inspect and possibly decorate
  */
@@ -58,8 +78,8 @@ function decorateManifestFile(editor: vscode.TextEditor | undefined): void {
 		return;
 	}
 
-	// Check if this is a manifest.yaml file
-	if (!isManifestFile(editor.document)) {
+	// Check if this is a manifest.yaml file at the root level
+	if (!isRootManifestFile(editor.document)) {
 		return;
 	}
 
@@ -70,18 +90,12 @@ function decorateManifestFile(editor: vscode.TextEditor | undefined): void {
 	}];
 	
 	editor.setDecorations(manifestTitleDecorationType, decorations);
-	
-	// Also validate the YAML
-	validateYamlDocument(editor.document);
 }
 
 // This method is called when your extension is activated
 export function activate(context: vscode.ExtensionContext) {
 
 	console.log('Dify Developer Kit extension is activating.');
-
-	// Initialize the schema validator
-	initializeValidator(context);
 
 	// Check existing workspace folders when the extension activates
 	if (vscode.workspace.workspaceFolders) {
@@ -123,22 +137,12 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	// Listen for document saves to validate YAML
-	const documentSaveListener = vscode.workspace.onDidSaveTextDocument(document => {
-		// Check if this is a manifest.yaml file
-		if (isManifestFile(document)) {
-			validateYamlDocument(document);
-		}
-	});
-
 	// Add the watchers to the subscriptions for cleanup when the extension deactivates
 	context.subscriptions.push(
 		workspaceWatcher,
 		editorChangeListener,
 		documentChangeListener,
-		documentSaveListener,
-		manifestTitleDecorationType,
-		yamlDiagnostics
+		manifestTitleDecorationType
 	);
 
 	console.log('Dify Developer Kit activation complete.');
