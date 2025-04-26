@@ -23,11 +23,11 @@
     "yamlValidation": [
       {
         "fileMatch": "/manifest.yaml",
-        "url": "https://raw.githubusercontent.com/lcandy2/vscode-dify-plugin-schema/refs/heads/main/src/schema/manifest.json"
+        "url": "https://lcandy2.github.io/vscode-dify-plugin-schema/src/schema/manifest.json"
       },
       {
         "fileMatch": "/tools/*.yaml",
-        "url": "https://raw.githubusercontent.com/lcandy2/vscode-dify-plugin-schema/refs/heads/main/src/schema/tool.json"
+        "url": "https://lcandy2.github.io/vscode-dify-plugin-schema/src/schema/tool.json"
       }
     ]
   },
