@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Dify Tool Manifest Schema",
-  "description": "JSON Schema for Dify tool manifest.yaml validation",
+  "title": "Dify Plugin Configuration",
+  "description": "JSON Schema for Dify Plugin Configuration manifest.yaml",
   "type": "object",
   "required": [
     "version",
