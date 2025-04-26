@@ -1,25 +1,45 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import * as fs from 'fs';
+import * as path from 'path';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "dify-developer-kit" is now active!');
+	// Check if a workspace folder is open
+	if (!vscode.workspace.workspaceFolders || vscode.workspace.workspaceFolders.length === 0) {
+		console.log('No workspace folder open.');
+		return;
+	}
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('dify-developer-kit.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from dify-developer-kit!');
-	});
+	const workspaceRoot = vscode.workspace.workspaceFolders[0].uri.fsPath;
 
-	context.subscriptions.push(disposable);
+	// Define the files to check for
+	const difyFiles = ['.difyignore', 'manifest.yaml', 'main.py'];
+	let allFilesExist = true;
+
+	// Check for the existence of each file in the workspace root
+	for (const file of difyFiles) {
+		const filePath = path.join(workspaceRoot, file);
+		if (!fs.existsSync(filePath)) {
+			allFilesExist = false;
+			console.log(`Dify check: Missing file - ${file}`);
+			break; // Exit the loop early if a file is missing
+		}
+	}
+
+	// If all required files exist, show an information message
+	if (allFilesExist) {
+		vscode.window.showInformationMessage('Dify tool directory detected. Validator is active.');
+		console.log('Dify tool directory detected.');
+	} else {
+		console.log('Not a Dify tool directory or missing required files.');
+	}
+
+	// No commands or subscriptions needed for this step yet
+	// context.subscriptions.push(disposable); // Remove or comment out if not needed
 }
 
 // This method is called when your extension is deactivated
