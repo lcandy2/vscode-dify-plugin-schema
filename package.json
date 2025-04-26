@@ -15,6 +15,7 @@
   "activationEvents": [
     "workspaceContains:manifest.yaml"
   ],
+  "repository": "https://github.com/lcandy2/vscode-dify-plugin-schema",
   "main": "./dist/extension.js",
   "extensionDependencies": [
     "redhat.vscode-yaml"
