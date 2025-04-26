@@ -1,71 +1,65 @@
-# dify-developer-kit README
+# Dify Plugin Schema
 
-This is the README for your extension "dify-developer-kit". After writing up a brief description, we recommend including the following sections.
+A Visual Studio Code extension that provides schema validation for Dify Plugin configuration files.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+This extension provides JSON schema validation for Dify Plugin configuration files, including:
 
-For example if there is an image subfolder under your extension project workspace:
+- Schema validation for `manifest.yaml` files
+- Schema validation for tool configuration files in the `tools/*.yaml` pattern
+- Schema validation for provider configuration files in the `provider/*.yaml` pattern
 
-\!\[feature X\]\(images/feature-x.png\)
+When editing these YAML files, you'll receive:
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+- Syntax validation
+- Auto-completion suggestions
+- Hover documentation
+- Error highlighting for invalid configuration
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+This extension depends on the "YAML Support by Red Hat" extension, which will be automatically installed as a dependency.
 
-## Extension Settings
+## Installation
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+You can install this extension through the VS Code Marketplace:
 
-For example:
+1. Open VS Code
+2. Go to Extensions (Ctrl+Shift+X)
+3. Search for "Dify Plugin Schema"
+4. Click Install
 
-This extension contributes the following settings:
+## Usage
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+The extension automatically activates when a `manifest.yaml` file is detected in your workspace. Schema validation will be applied to:
 
-## Known Issues
+- `/manifest.yaml` - Dify Plugin manifest
+- `/tools/*.yaml` - Tool configuration files
+- `/provider/*.yaml` - Provider configuration files
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+## Schema Details
+
+The extension uses the following schema URLs:
+
+- Manifest: `https://lcandy2.github.io/vscode-dify-plugin-schema/src/schema/manifest.json`
+- Tools: `https://lcandy2.github.io/vscode-dify-plugin-schema/src/schema/tools/tools.json`
+- Provider: `https://lcandy2.github.io/vscode-dify-plugin-schema/src/schema/tools/provider.json`
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.0.1
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+Initial release of Dify Plugin Schema extension with:
+- Support for manifest.yaml validation
+- Support for tools/*.yaml validation
+- Support for provider/*.yaml validation
 
 ---
 
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
 ## For more information
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+* [Dify Official Website](https://dify.ai/)
+* [Visual Studio Code's YAML Support](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
 
-**Enjoy!**
+**Enjoy building with Dify!**
