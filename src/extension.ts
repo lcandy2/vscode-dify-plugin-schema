@@ -3,7 +3,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as YAML from 'yaml';
+import { validateYamlDocument, yamlDiagnostics, isManifestFile } from './yamlValidator';
 
 // Create a decoration type for the "Dify Tool Manifest File" title
 const manifestTitleDecorationType = vscode.window.createTextEditorDecorationType({
@@ -15,9 +15,6 @@ const manifestTitleDecorationType = vscode.window.createTextEditorDecorationType
 	},
 	isWholeLine: true
 });
-
-// Create a diagnostics collection for YAML validation errors
-const yamlDiagnostics = vscode.languages.createDiagnosticCollection('difyYaml');
 
 /**
  * Checks if a given workspace folder is a Dify tool directory
@@ -53,87 +50,6 @@ function checkDifyDirectory(folder: vscode.WorkspaceFolder): void {
 }
 
 /**
- * Validates a YAML file and reports any errors
- * @param document The text document to validate
- */
-function validateYamlDocument(document: vscode.TextDocument): void {
-	// Only validate manifest.yaml files
-	const fileName = path.basename(document.fileName);
-	if (fileName !== 'manifest.yaml') {
-		return;
-	}
-
-	const diagnostics: vscode.Diagnostic[] = [];
-	const text = document.getText();
-
-	try {
-		// Try to parse the YAML
-		const parsedYaml = YAML.parse(text);
-		console.log('YAML parsed successfully:', parsedYaml);
-		
-		// Validate required fields (you can extend this with more specific validation)
-		if (!parsedYaml) {
-			throw new Error('Empty YAML document');
-		}
-		
-		// Check for required fields in manifest.yaml
-		const requiredFields = ['name', 'version', 'description'];
-		for (const field of requiredFields) {
-			if (!parsedYaml[field]) {
-				const regex = new RegExp(`${field}\\s*:`, 'g');
-				const match = regex.exec(text);
-				
-				if (match) {
-					// Field exists but might be empty
-					const position = document.positionAt(match.index);
-					const range = new vscode.Range(position, position.translate(0, field.length + 1));
-					const diagnostic = new vscode.Diagnostic(
-						range,
-						`The '${field}' field is required but has no value`,
-						vscode.DiagnosticSeverity.Error
-					);
-					diagnostics.push(diagnostic);
-				} else {
-					// Field doesn't exist
-					const diagnostic = new vscode.Diagnostic(
-						new vscode.Range(0, 0, 0, 0),
-						`Missing required field: '${field}'`,
-						vscode.DiagnosticSeverity.Error
-					);
-					diagnostics.push(diagnostic);
-				}
-			}
-		}
-	} catch (error) {
-		// Handle parsing errors
-		console.error('YAML parsing error:', error);
-		
-		// Create a diagnostic for the parsing error
-		const message = error instanceof Error ? error.message : String(error);
-		const lineMatch = message.match(/line (\d+)/);
-		
-		let range;
-		if (lineMatch && lineMatch[1]) {
-			const lineNumber = parseInt(lineMatch[1], 10) - 1;
-			const line = document.lineAt(Math.min(lineNumber, document.lineCount - 1));
-			range = new vscode.Range(line.range.start, line.range.end);
-		} else {
-			range = new vscode.Range(0, 0, 0, 0);
-		}
-		
-		const diagnostic = new vscode.Diagnostic(
-			range,
-			`YAML parsing error: ${message}`,
-			vscode.DiagnosticSeverity.Error
-		);
-		diagnostics.push(diagnostic);
-	}
-
-	// Update diagnostics
-	yamlDiagnostics.set(document.uri, diagnostics);
-}
-
-/**
  * Add a title decoration to manifest.yaml files
  * @param editor Text editor to inspect and possibly decorate
  */
@@ -143,8 +59,7 @@ function decorateManifestFile(editor: vscode.TextEditor | undefined): void {
 	}
 
 	// Check if this is a manifest.yaml file
-	const fileName = path.basename(editor.document.fileName);
-	if (fileName !== 'manifest.yaml') {
+	if (!isManifestFile(editor.document)) {
 		return;
 	}
 
@@ -208,8 +123,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// Listen for document saves to validate YAML
 	const documentSaveListener = vscode.workspace.onDidSaveTextDocument(document => {
 		// Check if this is a manifest.yaml file
-		const fileName = path.basename(document.fileName);
-		if (fileName === 'manifest.yaml') {
+		if (isManifestFile(document)) {
 			validateYamlDocument(document);
 		}
 	});
