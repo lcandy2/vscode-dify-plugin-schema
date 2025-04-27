@@ -162,7 +162,9 @@
         "tools": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": "string",
+            "pattern": "^provider.*$",
+            "description": "Path to the tool provider YAML file, must start with 'provider'"
           },
           "default": []
         },
