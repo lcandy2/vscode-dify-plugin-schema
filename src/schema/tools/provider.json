@@ -162,7 +162,8 @@
       "default": [],
       "items": {
         "type": "string",
-        "description": "Path to the tool YAML file"
+        "pattern": "^tools/.*\\.yaml$",
+        "description": "Path to the tool YAML file, must start with 'tools/' and end with '.yaml'.\nNote: Only tool files located within the 'tools/' directory should be listed here. Do not include provider files or other files."
       }
     },
     "extra": {

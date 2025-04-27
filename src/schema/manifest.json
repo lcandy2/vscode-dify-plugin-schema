@@ -163,8 +163,8 @@
           "type": "array",
           "items": {
             "type": "string",
-            "pattern": "^provider.*$",
-            "description": "Path to the tool provider YAML file, must start with 'provider'"
+            "pattern": "^provider/.*\\.yaml$",
+            "description": "Path to the tool provider YAML file, must match the pattern 'provider/*.yaml'.\nNote: Only provider files should be listed here; individual tool files should be included within the corresponding provider file."
           },
           "default": []
         },
